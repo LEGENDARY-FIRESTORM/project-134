@@ -7,7 +7,7 @@ function setup(){
     video = createCapture(VIDEO);
     video.hide();
     object_detector = ml5.objectDetector('cocossd', modelLoaded);
-    document.getElementById("status").innerHTML = "Status - detecting objects";
+    document.getElementById("status").innerHTML = "Status - detecting person";
 }
 
 function preload(){
@@ -18,13 +18,14 @@ function draw(){
     image(video, 0, 0, 640, 420);
 
     if(status != ""){
+        console.log(objects);
         r = random(255);
         g = random(255);
         b = random(255);
 
         for(i = 0; i < objects.length; i++){
             object_name = objects[i].label;
-            document.getElementById("status").innerHTML = "Status - detected objects";
+            document.getElementById("status").innerHTML = "Status - detected person";
             percent = floor(objects[i].confidence * 100);
             fill(r, g, b);
             noFill();
@@ -36,7 +37,7 @@ function draw(){
                 alarm.stop();
                 document.getElementById("number").innerHTML = "Baby Found";
             }
-            
+
             else{
                 alarm.play();
                 document.getElementById("number").innerHTML = "Baby not Found";
@@ -52,7 +53,6 @@ function draw(){
 
 function modelLoaded(){
     console.log("Model is loaded");
-    status = true;
     object_detector.detect(video, gotResult);
 }
 
@@ -62,4 +62,5 @@ function gotResult(error, results){
     }
     console.log(results);
     objects = results;
+    status = true;
 }
