@@ -1,5 +1,6 @@
 status = "";
 objects = [];
+alarm = "";
 
 function setup(){
     canvas = createCanvas(640, 420);
@@ -11,14 +12,15 @@ function setup(){
 }
 
 function preload(){
-    alarm = loadSound("mixkit-critical-alarm-1004.wav");
+    alarm = loadSound("amoung us drip.mp3");
 }
 
 function draw(){
     image(video, 0, 0, 640, 420);
 
     if(status != ""){
-        console.log(objects);
+        object_detector.detect(video, gotResult);
+
         r = random(255);
         g = random(255);
         b = random(255);
@@ -53,7 +55,7 @@ function draw(){
 
 function modelLoaded(){
     console.log("Model is loaded");
-    object_detector.detect(video, gotResult);
+    status = true;
 }
 
 function gotResult(error, results){
@@ -62,5 +64,4 @@ function gotResult(error, results){
     }
     console.log(results);
     objects = results;
-    status = true;
 }
